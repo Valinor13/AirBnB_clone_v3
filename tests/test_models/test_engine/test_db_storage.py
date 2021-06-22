@@ -67,6 +67,11 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
+    def test_db_func_get(self):
+        """ Test to ensure calling get() returns an ojbect"""
+        test_obj = State()
+        testing_get = DBStorage.get(State, test_obj.id)
+        self.assertIsInstance(testig_get, State)
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""

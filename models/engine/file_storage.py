@@ -17,6 +17,7 @@ classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
 
 
 class FileStorage:
+
     """serializes instances to a JSON file & deserializes back to instances"""
 
     # string - path to the JSON file
@@ -68,3 +69,35 @@ class FileStorage:
     def close(self):
         """call reload() method for deserializing the JSON file to objects"""
         self.reload()
+
+    def get(self, cls, id):
+        """Returns object based on class and ID, or None if not found"""
+        signal = 0
+        # add objects to dictionary based on class
+        get_objects = self.all(cls)
+        # loop through keys in the newly made dictionary object
+        for key in get_objects:
+            # confirm that an ojbect has id passed to get()
+            if id in key:
+                signal = 1
+                # if yes, you found it, break loop
+                break
+        if signal == 1:
+            # if signal = 1 match found, return object
+            return get_objects[key]
+        else:
+            return None
+
+    def count(self, cls=None):
+        """A method to count the number of objects in storage"""
+        # if class name is provided
+        if cls:
+            # transfer all instances of cls obj to new dict
+            count_them = self.all(cls)
+            # return the count via len of the dict.values()
+            return len(count_them.values())
+        else:
+            # if cls not provided, return all
+            count_them = self.all()
+            # return the count via len of dict.values()
+            return len(count_them.values())
