@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-
+""" This is the module constructor init file """
 
 from flask import Blueprint
 
