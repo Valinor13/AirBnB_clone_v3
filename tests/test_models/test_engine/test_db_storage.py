@@ -18,6 +18,10 @@ import json
 import os
 import pep8
 import unittest
+from io import StringIO
+import sys
+from unittest.mock import patch
+from console import HBNBCommand
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
@@ -69,9 +73,11 @@ test_db_storage.py'])
 
     def test_db_func_get(self):
         """ Test to ensure calling get() returns an ojbect"""
-        test_obj = State()
-        testing_get = DBStorage.get(State, test_obj.id)
-        self.assertIsInstance(testig_get, State)
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State name='CaliforniaLand'")
+            CL = f.getvalue()
+        new_ojb = DBStorage.get(State, CL)
+        self.assertIsInstance(new_obj, State)
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
