@@ -24,4 +24,22 @@ def all_states():
             abort(400, 'Missing name')
         else:
             new_state = State(name=json_dict['name'])
-            return jsonify(BaseModel.to_dict(new_state))       
+            new_state.save()
+            return jsonify(BaseModel.to_dict(new_state)), 201       
+
+@app_views.route('/states/<state_id>', methods=['GET', 'DELETE', 'PUT'])
+def states_by_id(state_id=None):
+    all_states = storage.all(State)
+    sig = 0
+    for key in all_states.keys():
+        if state_id in key:
+            sig = 1
+            break
+    if sig == 0:
+        abort(404)
+    if request.method == "GET":
+        return jsonify(BaseModel.to_dict(all_states[key]))
+    
+    elif request.method == "DELETE":
+        all_states[key].delete()
+        return jsonify({}), 200
