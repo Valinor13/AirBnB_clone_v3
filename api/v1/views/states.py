@@ -45,7 +45,7 @@ def states_by_id(state_id=None):
         storage.save()
         return jsonify({}), 200
 
-    else request.method == "PUT":
+    else:
         json_dict = request.get_json()
         if not json_dict:
             abort(400, 'Not a JSON')
