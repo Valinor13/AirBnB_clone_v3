@@ -4,7 +4,7 @@
 
 import os
 from models import storage
-from flask import Flask, render_template, Blueprint
+from flask import Flask, render_template, Blueprint, jsonify
 from api.v1.views import app_views
 
 
@@ -17,6 +17,11 @@ BNB3.register_blueprint(app_views, url_prefix='/api/v1')
 def tear_down(error):
     if storage:
         storage.close()
+
+
+@BNB3.errorhandler(404)
+def custom_404(exception):
+    return jsonify({"error": "Not found"}), 404
 
 if __name__ == '__main__':
     if not os.getenv('HBNB_API_HOST'):
