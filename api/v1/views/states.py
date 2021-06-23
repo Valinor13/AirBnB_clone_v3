@@ -25,3 +25,4 @@ def all_states():
             abort(400, 'Missing name')
         else:
            new_state = State(name=new_dict['name'])
+           return jsonify(BaseModel.to_dict(new_state))
