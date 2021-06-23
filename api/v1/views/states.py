@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """ Retrieves a list of all State objects"""
 
-from flask import Flask, Blueprint, render_template, request, url_for, redirect, abort, jsonify, json
+from flask import Flask, Blueprint, render_template, request, url_for, redirect, abort, jsonify
 from models.state import State
 from models.base_model import BaseModel
 from api.v1.views import app_views
@@ -15,13 +15,13 @@ def all_states():
         list_of_dicts = []
         for values in all_states.values():
             list_of_dicts.append(BaseModel.to_dict(values))
-    return jsonify(list_of_dicts)
+        return jsonify(list_of_dicts)
     else:
         json_dict = request.get_json()
         if not json_dict:
             abort(400, 'Not a JSON')
-        new_dict = json.load(json_dict)
-        if 'name' not in new_dict.key():
+        if 'name' not in json_dict.keys():
             abort(400, 'Missing name')
         else:
-           new_state = State(name=new_dict['name'])
+            new_state = State(name=json_dict['name'])
+            return jsonify(BaseModel.to_dict(new_state))
