@@ -26,3 +26,4 @@ def all_states():
         else:
            new_state = State(name=new_dict['name'])
            return jsonify(BaseModel.to_dict(new_state))
+           
