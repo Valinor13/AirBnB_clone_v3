@@ -1,4 +1,4 @@
-!/usr/bin/python3
+#!/usr/bin/python3
 """ This is the blueprint file for status """
 
 from api.v1.views import app_views
