@@ -13,7 +13,7 @@ from models.review import Review
 
 
 cls_dict = {
-    "amentities": Amenity,
+    "amenities": Amenity,
     "cities": City,
     "places": Place,
     "reviews": Review,
