@@ -35,7 +35,7 @@ def all_cities(state_id=None):
         if 'name' not in json_dict.keys():
             abort(400, 'Missing name')
         else:
-            new_city = City(name=json_dict['name'], state_id=state_id)
+            new_city = City(**json_dict)
             new_city.save()
             return jsonify(BaseModel.to_dict(new_city)), 201
 

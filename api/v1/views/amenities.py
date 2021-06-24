@@ -25,7 +25,7 @@ def all_amenity():
         if 'name' not in json_dict.keys():
             abort(400, 'Missing name')
         else:
-            new_amenity = Amenity(name=json_dict['name'])
+            new_amenity = Amenity(**json_dict)
             new_amenity.save()
             return jsonify(BaseModel.to_dict(new_amenity)), 201
 
