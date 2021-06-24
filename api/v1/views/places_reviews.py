@@ -35,8 +35,6 @@ def all_reviews(place_id=None):
         json_dict = request.get_json()
         if not json_dict:
             abort(400, 'Not a JSON')
-        if 'name' not in json_dict.keys():
-            abort(400, 'Missing name')
         if 'user_id' not in json_dict.keys():
             abort(400, 'Missing user_id')
         if 'text' not in json_dict.keys():
@@ -65,10 +63,10 @@ def review_by_id(review_id=None):
     if sig == 0:
         abort(404)
     if request.method == "GET":
-        return jsonify(BaseModel.to_dict(all_places[key]))
+        return jsonify(BaseModel.to_dict(all_reviews[key]))
 
     elif request.method == "DELETE":
-        all_review[key].delete()
+        all_reviews[key].delete()
         storage.save()
         return jsonify({}), 200
 
