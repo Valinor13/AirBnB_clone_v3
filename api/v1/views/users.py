@@ -22,10 +22,15 @@ def all_users():
         json_dict = request.get_json()
         if not json_dict:
             abort(400, 'Not a JSON')
-        if 'name' not in json_dict.keys():
-            abort(400, 'Missing name')
+        if 'email' not in json_dict.keys():
+            abort(400, 'Missing email')
+        elif 'password' not in json_dict.keys():
+            abort(400, 'Missing password')
         else:
-            new_users = User(name=json_dict['name'])
+            new_users = User(first_name=json_dict['first_name'],
+                             last_name=json_dict['last_name'],
+                             email=json_dict['email'],
+                             password=json_dict['password'])
             new_users.save()
             return jsonify(BaseModel.to_dict(new_users)), 201
 
