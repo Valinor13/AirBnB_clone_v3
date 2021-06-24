@@ -5,7 +5,7 @@ from flask import Flask, Blueprint, render_template
 from flask import request, url_for, redirect, abort, jsonify, json
 from models.city import City
 from models.user import User
-from models.place import Place 
+from models.place import Place
 from models.base_model import BaseModel
 from api.v1.views import app_views
 from models import storage
@@ -45,7 +45,7 @@ def all_places(city_id=None):
         if sig == 0:
             abort(404)
         else:
-            new_place= Place(**json_dict)   
+            new_place = Place(**json_dict)
             new_place.save()
             return jsonify(BaseModel.to_dict(new_place)), 201
 
@@ -73,7 +73,7 @@ def place_by_id(place_id=None):
         if not json_dict:
             abort(400, 'Not a JSON')
         for k, v in json_dict.items():
-            if (k == 'id' or k == 'city_id' or k == 'user_id'
+            if (k == 'id' or k == 'city_id' or k == 'user_id' or
                     k == 'created_at' or k == 'updated_at'):
                 continue
             else:

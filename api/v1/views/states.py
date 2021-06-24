@@ -25,7 +25,7 @@ def all_states():
         if 'name' not in json_dict.keys():
             abort(400, 'Missing name')
         else:
-            new_state = State(name=json_dict['name'])
+            new_state = State(**json_dict)
             new_state.save()
             return jsonify(BaseModel.to_dict(new_state)), 201
 
