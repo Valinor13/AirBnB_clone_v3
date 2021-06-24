@@ -4,6 +4,10 @@ Contains the TestFileStorageDocs classes
 """
 
 from datetime import datetime
+from unittest.mock import patch
+from io import StringIO
+import sys
+from console import HBNBCommand
 import inspect
 import models
 from models.engine import file_storage
@@ -113,3 +117,21 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_fs_func_get(self):
+        """ Test to ensure calling get() returns an ojbect"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State name='CaliforniaLand'")
+            CL = f.getvalue()
+        new_obj = FileStorage().get(State, CL[:-2])
+        self.assertIsInstance(new_obj, State)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_fs_func_count(self):
+        """ Test to ensure correct count of class instances """
+        count1 = FileStorage().count(State)
+        new_state = State(name="TestLand")
+        new_state.save()
+        count2 = FileStorage().count(State)
+        self.assertEqual(count2, (count1 + 1))
