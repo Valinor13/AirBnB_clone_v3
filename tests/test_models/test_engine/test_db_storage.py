@@ -22,7 +22,7 @@ from io import StringIO
 import sys
 from unittest.mock import patch
 from console import HBNBCommand
-DBStorage = db_storage.DBStorage
+DBStorage = db_storage.DBStorage()
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
            "Review": Review, "State": State, "User": User}
 
@@ -71,13 +71,6 @@ test_db_storage.py'])
             self.assertTrue(len(func[1].__doc__) >= 1,
                             "{:s} method needs a docstring".format(func[0]))
 
-    def test_db_func_get(self):
-        """ Test to ensure calling get() returns an ojbect"""
-        with patch('sys.stdout', new=StringIO()) as f:
-            HBNBCommand().onecmd("create State name='CaliforniaLand'")
-            CL = f.getvalue()
-        new_ojb = DBStorage.get(State, CL)
-        self.assertIsInstance(new_obj, State)
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
@@ -97,3 +90,21 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_db_func_get(self):
+        """ Test to ensure calling get() returns an ojbect"""
+        with patch('sys.stdout', new=StringIO()) as f:
+            HBNBCommand().onecmd("create State name='CaliforniaLand'")
+            CL = f.getvalue()
+        new_obj = DBStorage.get(State, CL[:-2])
+        self.assertIsInstance(new_obj, State)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_db_func_count(self):
+        """ Test to ensure correct count of class instances """
+        count1 = DBStorage.count(State)
+        new_state = State(name="TestLand")
+        new_state.save()
+        count2 = DBStorage.count(State)
+        self.assertIsEqual(count2, count1 + 1)
