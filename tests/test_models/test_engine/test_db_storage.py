@@ -74,6 +74,17 @@ test_db_storage.py'])
 
 class TestFileStorage(unittest.TestCase):
     """Test the FileStorage class"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_3(self):
+        """ this tests the number 3 """
+        self.assertEqual(3, 3)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_cheese(self):
+        """ this tests the cheeze """
+        self.assertIsInstance("cheese", str)
+
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_all_returns_dict(self):
         """Test that all returns a dictionaty"""
