@@ -45,6 +45,7 @@ def all_places(city_id=None):
         if sig == 0:
             abort(404)
         else:
+            json_dict['city_id'] = city_id
             new_place = Place(**json_dict)
             new_place.save()
             return jsonify(BaseModel.to_dict(new_place)), 201
