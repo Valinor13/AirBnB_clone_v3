@@ -4,13 +4,13 @@
 from flask import Flask, Blueprint, render_template
 from flask import request, url_for, redirect, abort, jsonify, json
 from models.state import State
-from models.amenities import Amenity
+from models.amenity import Amenity
 from models.base_model import BaseModel
 from api.v1.views import app_views
 from models import storage
 
 
-@app_views.route('/amenity', methods=['GET', 'POST'])
+@app_views.route('/amenities', methods=['GET', 'POST'])
 def all_amenity():
     if request.method == "GET":
         all_amenities = storage.all(Amenity)
@@ -30,8 +30,8 @@ def all_amenity():
             return jsonify(BaseModel.to_dict(new_amenity)), 201
 
 
-@app_views.route('/amenity/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
-def amenity_by_id(amenity=id=None):
+@app_views.route('/amenities/<amenity_id>', methods=['GET', 'DELETE', 'PUT'])
+def amenity_by_id(amenity_id=None):
     all_amenity = storage.all(Amenity)
     sig = 0
     for key in all_amenity.keys():
