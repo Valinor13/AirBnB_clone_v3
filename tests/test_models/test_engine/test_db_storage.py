@@ -119,3 +119,4 @@ class TestFileStorage(unittest.TestCase):
         new_state.save()
         count2 = DBStorage().count(State)
         self.assertIsEqual(count2, count1 + 1)
+        
