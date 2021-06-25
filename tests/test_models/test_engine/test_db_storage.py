@@ -28,6 +28,7 @@ classes = {"Amenity": Amenity, "City": City, "Place": Place,
 
 
 class TestDBStorageDocs(unittest.TestCase):
+
     """Tests to check the documentation and style of DBStorage class"""
     @classmethod
     def setUpClass(cls):
@@ -73,6 +74,7 @@ test_db_storage.py'])
 
 
 class TestFileStorage(unittest.TestCase):
+
     """Test the FileStorage class"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
@@ -119,4 +121,3 @@ class TestFileStorage(unittest.TestCase):
         new_state.save()
         count2 = DBStorage().count(State)
         self.assertIsEqual(count2, count1 + 1)
-        
