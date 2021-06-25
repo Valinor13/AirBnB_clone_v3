@@ -21,12 +21,6 @@ The console is the first segment of the AirBnB project at Holberton School that 
 ## Environment
 This project is interpreted/tested on Ubuntu 14.04 LTS using python3 (version 3.4.3)
 
-## Installation
-* Clone this repository: `git clone "https://github.com/alexaorrico/AirBnB_clone.git"`
-* Access AirBnb directory: `cd AirBnB_clone`
-* Run hbnb(interactively): `./console` and enter command
-* Run hbnb(non-interactively): `echo "<command>" | ./console.py`
-
 ## File Descriptions
 [console.py](console.py) - the console contains the entry point of the command interpreter. 
 List of commands this console current supports:
@@ -128,6 +122,9 @@ TestBaseModel class:
 
 
 ## Examples of use
+
+### Console
+
 ```
 vagrantAirBnB_clone$./console.py
 (hbnb) help
@@ -149,6 +146,135 @@ EOF  all  create  destroy  help  quit  show  update
 ** no instance found **
 (hbnb) quit
 ```
+## API
+
+Updates were made to the program to include a RESTful API that helps seamlessly integrate FileStorage and DBStorage with our front end HTML. 
+
+Make sure on your machine that you have MySQL running, as well that your MySQL is set up with the appropriate user, password, databases, tables, and content.
+
+## Spin up your server in this way:
+``` 
+root@0639522cfac7:/AirBnB_clone_v3# HBNB_MYSQL_USER=hbnb_dev HBNB_MYSQL_PWD=hbnb_dev_pwd HBNB_MYSQL_HOST=localhost HBNB_MYSQL_DB=hbnb_dev_db HBNB_TYPE_STORAGE=db HBNB_API_HOST=0.0.0.0 HBNB_API_PORT=5000 python3 -m api.v1.app
+/usr/local/lib/python3.4/dist-packages/sqlalchemy/engine/default.py:588: Warning: (1681, "'@@SESSION.GTID_EXECUTED' is deprecated and will be removed in a future release.")
+  cursor.execute(statement, parameters)
+ * Serving Flask app "app" (lazy loading)
+ * Environment: production
+   WARNING: This is a development server. Do not use it in a production deployment.
+   Use a production WSGI server instead.
+ * Debug mode: on
+ * Running on http://0.0.0.0:5000/ (Press CTRL+C to quit)
+ * Restarting with stat
+/usr/local/lib/python3.4/dist-packages/sqlalchemy/engine/default.py:588: Warning: (1681, "'@@SESSION.GTID_EXECUTED' is deprecated and will be removed in a future release.")
+  cursor.execute(statement, parameters)
+ * Debugger is active!
+ * Debugger PIN: 670-419-348
+```
+When your see '* Running on http://0.0.00:5000/ (Press CTRL+C to quit)" your server is active and ready to be tested.
+
+## Testing the API
+
+Below is usage on the command line to test that an instance of a Class object is is being manipulated in the desired way via the HTTP methods provided in the API code.
+
+## GET all State instances the database in this way:
+
+``` 
+root@0639522cfac7:/AirBnB_clone_v3# curl -X GET http://0.0.0.0:5000/api/v1/states/
+[
+  {
+    "__class__": "State",
+    "created_at": "2017-03-25T02:17:06.000000",
+    "id": "0e391e25-dd3a-45f4-bce3-4d1dea83f3c7",
+    "name": "Alabama",
+    "updated_at": "2017-03-25T02:17:06.000000"
+  },
+  {
+    "__class__": "State",
+    "created_at": "2017-03-25T02:17:06.000000",
+    "id": "10098698-bace-4bfb-8c0a-6bae0f7f5b8f",
+    "name": "Oregon",
+    "updated_at": "2017-03-25T02:17:06.000000"
+  }, 
+  ....
+```
+
+## GET an instance of a specific State instance in this way:
+
+```
+root@0639522cfac7:/AirBnB_clone_v3# curl -X GET http://0.0.0.0:5000/api/v1/states/541bba6e-9543-4b33-8062-77ef26cd9778
+{
+  "__class__": "State",
+  "created_at": "2017-03-25T02:17:06.000000",
+  "id": "541bba6e-9543-4b33-8062-77ef26cd9778",
+  "name": "Hawaii",
+  "updated_at": "2017-03-25T02:17:06.000000"
+}
+```
+
+## POST (create) a new instance of a class object in this way:
+
+```
+root@0639522cfac7:/AirBnB_clone_v3# curl -X POST http://0.0.0.0:5000/api/v1/states/ -H "Content-Type: application/json" -d '{"name": "Oklahoma"}' -vvv
+* Hostname was NOT found in DNS cache
+*   Trying 0.0.0.0...
+* Connected to 0.0.0.0 (127.0.0.1) port 5000 (#0)
+> POST /api/v1/states/ HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: 0.0.0.0:5000
+> Accept: */*
+> Content-Type: application/json
+> Content-Length: 20
+>
+* upload completely sent off: 20 out of 20 bytes
+* HTTP 1.0, assume close after body
+< HTTP/1.0 201 CREATED
+< Content-Type: application/json
+< Content-Length: 193
+< Access-Control-Allow-Origin: 0.0.0.0
+< Server: Werkzeug/0.16.1 Python/3.4.3
+< Date: Fri, 25 Jun 2021 20:59:12 GMT
+<
+{
+  "__class__": "State",
+  "created_at": "2021-06-25T20:59:12.757014",
+  "id": "1810f786-b98a-4edb-b7a8-16b4f306f614",
+  "name": "Oklahoma",
+  "updated_at": "2021-06-25T20:59:12.757160"
+}
+* Closing connection 0
+```
+## PUT (udpate) an existing instance of a class object in this way:
+```
+root@0639522cfac7:/AirBnB_clone_v3# curl -X PUT http://0.0.0.0:5000/api/v1/states/1810f786-b98a-4edb-b7a8-16b4f306f614 -H "Content-Type: application/json" -d '{"name": "Kansas"}'
+
+# updates the state id previously associated with "Oklahoma"
+
+{
+  "__class__": "State",  
+  "created_at": "2021-06-25T20:59:13.000000",
+  "id": "1810f786-b98a-4edb-b7a8-16b4f306f614",
+  "name": "Kansas",
+  "updated_at": "2021-06-25T21:03:10.218507"
+}
+
+```
+## DELETE an object instance in this way:
+```
+root@0639522cfac7:/AirBnB_clone_v3# curl -X DELETE http://0.0.0.0:5000/api/v1/states/1810f786-b98a-4edb-b7a8-16b4f306f614
+{}
+
+```
+
+## confirm that the DELETE worked successfully in this way:
+```
+root@0639522cfac7:/AirBnB_clone_v3# curl -X GET http://0.0.0.0:5000/api/v1/states/1810f786-b98a-4edb-b7a8-16b4f306f614
+{
+  "error": "Not found"
+}
+```
+
+
+
+
 
 ## Bugs
 No known bugs at this time. 
@@ -156,6 +282,12 @@ No known bugs at this time.
 ## Authors
 Alexa Orrico - [Github](https://github.com/alexaorrico) / [Twitter](https://twitter.com/alexa_orrico)  
 Jennifer Huang - [Github](https://github.com/jhuang10123) / [Twitter](https://twitter.com/earthtojhuang)
+
+**Holberton School 0x05 - RESTful API** Project Collaborators  
+Jay Calhoun - [E-mail](jwcalhoun2@gmail.com)    
+Nikki Edmonds - [E-mail](2495@holbertonschool.com)  
+Chris Vanndy - [E-mail](chrisvannyc@gmail.com)
+
 
 Second part of Airbnb: Joann Vuong
 ## License
