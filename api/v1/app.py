@@ -6,10 +6,12 @@ import os
 from models import storage
 from flask import Flask, render_template, Blueprint, jsonify
 from api.v1.views import app_views
+from flask_cors import CORS
 
 
 BNB3 = Flask(__name__)
 BNB3.url_map.strict_slashes = False
+CORS(BNB3, resources={r"/*": {"origins": "0.0.0.0"}})
 BNB3.register_blueprint(app_views, url_prefix='/api/v1')
 
 
